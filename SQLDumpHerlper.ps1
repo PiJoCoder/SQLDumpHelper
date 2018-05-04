@@ -283,7 +283,7 @@ Write-Host "Command for dump generation: ", $cmd, $arglist -ForegroundColor Gree
 #do-we-want-multiple-dumps section
 Write-Host ""
 Write-Host "This utility can generate multiple memory dumps, at a certain interval"
-Write-Host "Would you like to collect multiple memory dumps?" -ForegroundColor Yellow
+Write-Host "Would you like to collect multiple memory dumps? If you press 'N' the dump generation will start" -ForegroundColor Yellow
 
 #validate Y/N input
 while (($YesNo -ne "y") -and ($YesNo -ne "n"))
