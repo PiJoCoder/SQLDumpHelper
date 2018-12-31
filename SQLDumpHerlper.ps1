@@ -1,5 +1,4 @@
 
-
 $isInt = $false
 $isIntValDcnt = $false
 $isIntValDelay = $false
@@ -41,17 +40,18 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 
 
 #what product would you like to generate a memory dump
-while(($ProductNumber -ne "1") -and ($ProductNumber -ne "2") -and ($ProductNumber -ne "3") -and ($ProductNumber -ne "4"))
+while(($ProductNumber -ne "1") -and ($ProductNumber -ne "2") -and ($ProductNumber -ne "3") -and ($ProductNumber -ne "4") -and ($ProductNumber -ne "5"))
 {
     Write-Host "Which product would you like to generate a memory dump of?" -ForegroundColor Yellow
     Write-Host "1) SQL Server"
     Write-Host "2) SSAS (Analysis Services) "
     Write-Host "3) SSIS (Integration Services)"
     Write-Host "4) SSRS (Reporting Services)"
+    Write-Host "5) SQL Server Agent"
     Write-Host ""
-    $ProductNumber = Read-Host "Enter 1-4>"
+    $ProductNumber = Read-Host "Enter 1-5>"
 
-    if (($ProductNumber -ne "1") -and ($ProductNumber -ne "2") -and ($ProductNumber -ne "3") -and ($ProductNumber -ne "4"))
+    if (($ProductNumber -ne "1") -and ($ProductNumber -ne "2") -and ($ProductNumber -ne "3") -and ($ProductNumber -ne "4")-and ($ProductNumber -ne "5"))
     {
         Write-Host ""
         Write-Host "Please enter a valid number from list above!"
@@ -78,7 +78,12 @@ elseif ($ProductNumber -eq "3")
 elseif ($ProductNumber -eq "4")
 {
     $SqlTaskList = Tasklist /SVC /FI "imagename eq reportingservicesservice*" /FO CSV | ConvertFrom-Csv
-    $ProductStr = "SSIS (Integration Services)"
+    $ProductStr = "SSRS (Reporting Services)"
+}
+elseif ($ProductNumber -eq "5")
+{
+    $SqlTaskList = Tasklist /SVC /FI "imagename eq sqlagent*" /FO CSV | ConvertFrom-Csv
+    $ProductStr = "SQL Server Agent"
 }
 
 if ($SqlTaskList.Count -eq 0)
@@ -98,7 +103,7 @@ if ($SqlTaskList.Count -gt 1)
     #check input and make sure it is a valid integer
     while(($isInt -eq $false) -or ($ValidPid -eq $false))
     {
-        Write-Host "Please enter the PID for the desired SQL Server from list above" -ForegroundColor Yellow
+        Write-Host "Please enter the PID for the desired SQL service from list above" -ForegroundColor Yellow
         $SqlPidStr = Read-Host ">" 
     
         try{
@@ -283,7 +288,7 @@ Write-Host "Command for dump generation: ", $cmd, $arglist -ForegroundColor Gree
 #do-we-want-multiple-dumps section
 Write-Host ""
 Write-Host "This utility can generate multiple memory dumps, at a certain interval"
-Write-Host "Would you like to collect multiple memory dumps? If you press 'N' the dump generation will start" -ForegroundColor Yellow
+Write-Host "Would you like to collect multiple memory dumps?" -ForegroundColor Yellow
 
 #validate Y/N input
 while (($YesNo -ne "y") -and ($YesNo -ne "n"))
