@@ -215,7 +215,7 @@ elseif ($ProductNumber -eq "2")  #SSAS dump
     }
 }
 
-elseif ($ProductNumber -eq "3" -or $ProductNumber -eq "4")  #SSIS dump
+elseif ($ProductNumber -eq "3" -or $ProductNumber -eq "4" -or $ProductNumber -eq "5")  #SSIS/SSRS/SQL Agent dump
 {
 
     #ask what type of SSIS memory dump 
