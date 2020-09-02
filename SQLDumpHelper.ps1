@@ -262,6 +262,14 @@ while($OutputFolder -eq "" -or !(Test-Path -Path $OutputFolder))
 }
 
 
+#strip the last character of the Output folder if it is a backslash "\". Else Sqldumper.exe will fail
+if ($OutputFolder.Substring($OutputFolder.Length-1) -eq "\")
+{
+    $OutputFolder = $OutputFolder.Substring(0, $OutputFolder.Length-1)
+    Write-Host "Stripped the last '\' from output folder name. Now folder name is  $OutputFolder"
+}
+
+
 #find the highest version of SQLDumper.exe on the machine
 $NumFolder = dir "c:\Program Files\microsoft sql server\1*" | Select-Object @{name = "DirNameInt"; expression={[int]($_.Name)}}, Name, Mode | Where-Object Mode -Match "da*" | Sort-Object DirNameInt -Descending
 
